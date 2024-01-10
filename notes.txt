@@ -1,0 +1,7 @@
+Hardcoded expect sentences in UserModel.test
+creatorid and post_id, not good, uniform the naming of columns in databases;
+delete id in dummy user in usermodel test, it creates it automatically Sequelize;
+
+OK please now test also all the possible errors (invalid dates, invalid cities)
+
+OK please now test the sequelize FindAll method as well, without stubbing it

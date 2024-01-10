@@ -1,10 +1,11 @@
 {
   "name": "node-project",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha --recursive",
+    "test": "NODE_ENV=test mocha --recursive tests",
     "dev": "nodemon index.js"
   },
   "repository": {
