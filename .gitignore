@@ -1,2 +1,4 @@
 .env
 .env.test
+app.yaml
+node_modules

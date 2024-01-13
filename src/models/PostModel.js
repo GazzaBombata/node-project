@@ -34,8 +34,7 @@ const Post = sequelize.define('Post', {
 
 Post.createPost = async (postData) => {
   try {
-    if (isNaN(postData.id)) throw new Error('Post ID must be a number');
-    
+
     const post = await Post.create(postData);
     const retrievedPost = await Post.findByPk(post.id);
     if (!retrievedPost) throw new Error('Failed to create post');
@@ -93,9 +92,11 @@ Post.deletePost = async (id) => {
     }
 };
 
-Post.getAllPosts = async (from, to, interaction_date, cities) => {
+Post.getAllPosts = async ({from, to, interaction_date, cities}) => {
   try {
+      
       const where = {};
+      console.log(cities)
       if (from && to) {
           const fromDate = new Date(from);
           const toDate = new Date(to);
@@ -135,10 +136,8 @@ Post.getAllPosts = async (from, to, interaction_date, cities) => {
       }
 
       if (cities) {
-          if (typeof cities !== 'string') {
-              throw new Error('Invalid format for "cities" parameter. It should be a string');
-          }
-          include[0].include[0].where.city = { [Op.in]: cities.split(',') };
+        include[0].required = true;
+        include[0].include[0].where.city = { [Op.in]: cities };
       }
 
       const posts = await Post.findAll({ where, include });

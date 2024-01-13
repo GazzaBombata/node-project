@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { User, Interaction, Post } from './index.js';
+import { User, Interaction, Post } from './models/index.js';
 
 const app = express();
 
@@ -12,6 +12,10 @@ app.use((error, req, res, next) => {
   }
   next();
 });
+
+app.get('/', (req, res) => {
+    res.send('Hello, World node-project!');
+  });
 
 // Create a new user
 app.post('/users', async (req, res) => {
@@ -151,8 +155,8 @@ app.delete('/interactions/:id', async (req, res) => {
 // Get all posts with interactions
 app.get('/posts', async (req, res) => {
     try {
+        console.log(req.query)
         const { from, to, interaction_date, interaction_cities_list } = req.query;
-
         // Convert interaction_cities_list from comma-separated string to array
         const cities = interaction_cities_list ? interaction_cities_list.split(',') : null;
 
@@ -163,4 +167,5 @@ app.get('/posts', async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('Server is running on port 3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

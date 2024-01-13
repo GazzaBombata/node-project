@@ -54,8 +54,7 @@ const Interaction = sequelize.define('Interaction', {
 
 Interaction.createInteraction = async (interactionData) => {
   try {
-    if (isNaN(interactionData.id)) throw new Error('nteraction ID is NaN');
-    
+
     const interaction = await Interaction.create(interactionData);
     const retrievedInteraction = await Interaction.findByPk(interaction.id);
     if (!retrievedInteraction) throw new Error('Failed to create interaction');

@@ -24,10 +24,9 @@ const User = sequelize.define('User', {
 
 User.createUser = async (userData) => {
     try {
-        if (isNaN(userData.id)) throw new Error('User ID must be a number');
-        
+        console.log(userData);
         const user = await User.create(userData);
-        const retrievedUser = await User.findByPk(userData.id);
+        const retrievedUser = await User.findByPk(user.id);
         if (!retrievedUser) throw new Error('Failed to create user');
 
         return user;
