@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Documentation</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
+  <!-- Open Graph tags -->
+  <meta property="og:title" content="API Documentation">
+  <meta property="og:description" content="This is the API documentation for our service. It includes endpoints for User, Post, and Interaction models.">
+  <meta property="og:image" content="https://unsplash.com/photos/captcha-cvBBO4PzWPg?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash">
+  <meta property="og:url" content="https://node-project-411013.oa.r.appspot.com/"> 
+
+  <link rel="icon" type="image/png" href="https://img.icons8.com/ios-glyphs/30/code.png">
+</head>
+
+</head>
+<body>
+  <div class="container">
+    <h1>API Documentation</h1>
+    <h2>User Endpoints</h2>
+    <ul>
+      <li><code>POST /users</code>: Creates a new user. The request body should contain the user details.</li>
+      <li><code>GET /users/:id</code>: Retrieves a user by ID.</li>
+      <li><code>PUT /users/:id</code>: Updates a user by ID. The request body should contain the new user details.</li>
+      <li><code>DELETE /users/:id</code>: Deletes a user by ID.</li>
+    </ul>
+    <h2>Post Endpoints</h2>
+    <ul>
+      <li><code>POST /posts</code>: Creates a new post. The request body should contain the post details.</li>
+      <li><code>GET /posts/:id</code>: Retrieves a post by ID.</li>
+      <li><code>PUT /posts/:id</code>: Updates a post by ID. The request body should contain the new post details.</li>
+      <li><code>DELETE /posts/:id</code>: Deletes a post by ID.</li>
+      <li><code>GET /posts</code>: Retrieves all posts with interactions. The request can include query parameters for filtering.</li>
+    </ul>
+    <h2>Interaction Endpoints</h2>
+    <ul>
+      <li><code>POST /interactions</code>: Creates a new interaction. The request body should contain the interaction details.</li>
+      <li><code>GET /interactions/:id</code>: Retrieves an interaction by ID.</li>
+      <li><code>PUT /interactions/:id</code>: Updates an interaction by ID. The request body should contain the new interaction details.</li>
+      <li><code>DELETE /interactions/:id</code>: Deletes an interaction by ID.</li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -10,6 +10,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var app = (0, _express["default"])();
 app.use(_bodyParser["default"].json());
+app.use(_express["default"]["static"]('public'));
 app.use(function (error, req, res, next) {
   if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
     return res.status(400).send({
@@ -19,7 +20,7 @@ app.use(function (error, req, res, next) {
   next();
 });
 app.get('/', function (req, res) {
-  res.send('Hello, World node-project!');
+  res.send('Hello, World by node-project!');
 });
 
 // Create a new user

@@ -6,6 +6,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(express.static('public'));
+
 app.use((error, req, res, next) => {
   if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
       return res.status(400).send({ message: 'Invalid JSON' }); // Bad request
@@ -14,7 +16,7 @@ app.use((error, req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello, World node-project!');
+    res.send('Hello, World by node-project!');
   });
 
 // Create a new user
