@@ -14,15 +14,21 @@ if (process.env.NODE_ENV === 'test') {
 } else {
   _dotenv["default"].config();
 }
+var dbConfig = {
+  dialect: 'mysql',
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+};
 var host = process.env.DB_HOST;
+var port = process.env.DB_PORT;
 console.log("Using first host ".concat(host));
 if (process.env.NODE_ENV === 'production') {
-  console.log('Production environment detected.');
-  console.log(process.env.CLOUD_SQL_CONNECTION_NAME);
-  host = "/cloudsql/".concat(process.env.CLOUD_SQL_CONNECTION_NAME);
-  console.log("Changing host ".concat(host));
+  dbConfig.dialectOptions = {
+    socketPath: '/cloudsql/' + process.env.CLOUD_SQL_CONNECTION_NAME
+  };
+} else {
+  dbConfig.host = process.env.DB_HOST;
+  dbConfig.port = process.env.DB_PORT;
 }
-var sequelize = exports.sequelize = new _sequelize.Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: host,
-  dialect: 'mysql'
-});
+var sequelize = exports.sequelize = new _sequelize.Sequelize(dbConfig);

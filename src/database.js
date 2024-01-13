@@ -1,4 +1,3 @@
-
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 
@@ -8,17 +7,23 @@ if (process.env.NODE_ENV === 'test') {
   dotenv.config();
 }
 
+let dbConfig = {
+  dialect: 'mysql',
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+};
+
 let host = process.env.DB_HOST;
+let port = process.env.DB_PORT;
 console.log(`Using first host ${host}`);
 if (process.env.NODE_ENV === 'production') {
-  console.log('Production environment detected.');
-  console.log(process.env.CLOUD_SQL_CONNECTION_NAME)
-  host = `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`;
-  console.log(`Changing host ${host}`);
+  dbConfig.dialectOptions = {
+    socketPath: '/cloudsql/' + process.env.CLOUD_SQL_CONNECTION_NAME
+  };
+} else {
+  dbConfig.host = process.env.DB_HOST;
+  dbConfig.port = process.env.DB_PORT;
 }
 
-
-export const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: host,
-    dialect: 'mysql',
-});
+export const sequelize = new Sequelize(dbConfig);
