@@ -2,3 +2,5 @@
 .env.test
 app.yaml
 node_modules
+dist
+.babelrc

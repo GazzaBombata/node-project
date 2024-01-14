@@ -44,9 +44,6 @@ Please visit the webpage https://node-project-411013.oa.r.appspot.com/ for updat
 - [Sequelize](https://sequelize.org/)
 - [Babel](https://babeljs.io/)
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/GazzaBombata/yourcontributingmdlink) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## License
 
