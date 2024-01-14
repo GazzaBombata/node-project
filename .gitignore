@@ -4,3 +4,4 @@ app.yaml
 node_modules
 dist
 .babelrc
+notes.txt
