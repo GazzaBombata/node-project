@@ -92,7 +92,7 @@ Post.deletePost = async (id) => {
     }
 };
 
-Post.getAllPosts = async ({from, to, interaction_date, cities}) => {
+Post.getAllPosts = async ({from, to, interaction_date, cities, page = 1, pageSize = 10}) => {
   try {
       
       const where = {};
@@ -140,7 +140,21 @@ Post.getAllPosts = async ({from, to, interaction_date, cities}) => {
         include[0].include[0].where.city = { [Op.in]: cities };
       }
 
-      const posts = await Post.findAll({ where, include });
+    const maxPageSize = 100;
+    if (pageSize > maxPageSize) {
+      throw new Error(`Page size cannot be greater than ${maxPageSize}`);
+    }
+
+    const offset = (page - 1) * pageSize;
+    const limit = pageSize;
+
+    const posts = await Post.findAll({
+      where,
+      include,
+      offset,
+      limit,
+      order: [['creation_date', 'DESC']],
+    });
       return posts;
   } catch (error) {
       throw error;
