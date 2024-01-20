@@ -6,6 +6,7 @@ const UserController = {
       const user = await User.createUser(req.body);
       res.status(201).json(user);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: error.message });
     }
   },
@@ -16,6 +17,7 @@ const UserController = {
       const user = await User.getUser(id);
       res.json(user);
     } catch (error) {
+      console.log(error);
       if (error.message === 'User not found') {
         res.status(404).json({ message: error.message });
       } else {
@@ -30,6 +32,7 @@ const UserController = {
       const user = await User.updateUser(id, req.body);
       res.json(user);
     } catch (error) {
+      console.log(error);
       if (error.message === 'User not found') {
         res.status(404).json({ message: error.message });
       } else {
@@ -44,6 +47,7 @@ const UserController = {
       const message = await User.deleteUser(id);
       res.json(message);
     } catch (error) {
+      console.log(error);
       if (error.message === 'User not found') {
         res.status(404).json({ message: error.message });
       } else {

@@ -16,6 +16,7 @@ const PostController = {
       const post = await Post.getPost(id);
       res.json(post);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: error.message });
     }
   },
@@ -26,6 +27,7 @@ const PostController = {
       const post = await Post.updatePost(id, req.body);
       res.json(post);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: error.message });
     }
   },
@@ -36,6 +38,7 @@ const PostController = {
       const message = await Post.deletePost(id);
       res.json(message);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: error.message });
     }
   },
@@ -46,9 +49,10 @@ const PostController = {
       // Convert interaction_cities_list from comma-separated string to array
       const cities = interaction_cities_list ? interaction_cities_list.split(',') : null;
 
-      const posts = await Post.getAllPosts({ from, to, interaction_date, cities, page, pageSize });
+      const posts = await Post.getAllPosts({ from, to, interaction_date, cities, page, pageSize: Number(pageSize) });
       res.json(posts);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: error.message });
     }
   }
