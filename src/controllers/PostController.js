@@ -46,10 +46,10 @@ const PostController = {
       // Convert interaction_cities_list from comma-separated string to array
       const cities = interaction_cities_list ? interaction_cities_list.split(',') : null;
 
-      const posts = await Post.getAllPosts({ from, to, interaction_date, cities, page, pageSize });
+      const posts = await Post.getAllPosts({ from, to, interaction_date, cities, page, pageSize : Number(pageSize) });
       res.json(posts);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message }); 
     }
   }
 };
