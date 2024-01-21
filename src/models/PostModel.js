@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
 import { Op } from 'sequelize';
 import { User, Interaction } from './index.js';
+import { QueryTypes } from 'sequelize';
 
 
 const Post = sequelize.define('Post', {
@@ -92,11 +93,9 @@ Post.deletePost = async (id) => {
     }
 };
 
-Post.getAllPosts = async ({from, to, interaction_date, cities, page = 1, pageSize = 10}) => {
+Post.getAllPosts = async ({from, to, interaction_date, cities, pageInt, pageSizeInt}) => {
   try {
-      
       const where = {};
-      console.log(cities)
       if (from && to) {
           const fromDate = new Date(from);
           const toDate = new Date(to);
@@ -140,25 +139,64 @@ Post.getAllPosts = async ({from, to, interaction_date, cities, page = 1, pageSiz
         include[0].include[0].where.city = { [Op.in]: cities };
       }
 
-    const maxPageSize = 100;
-    if (pageSize > maxPageSize) {
-      throw new Error(`Page size cannot be greater than ${maxPageSize}`);
-    }
+      const offset = (pageInt - 1) * pageSizeInt;
+      const limit = pageSizeInt;
 
-    const offset = (page - 1) * pageSize;
-    const limit = pageSize;
+    // // Fetch the posts with pagination
+    // const posts = await Post.findAll({
+    //   where,
+    //   include,
+    //   // offset,
+    //   // limit,
+    // });
 
-    const posts = await Post.findAll({
-      where,
-      include,
-      offset,
-      limit,
-      order: [['creation_date', 'DESC']],
-    });
-      return posts;
+    const posts = await sequelize.query(`
+  SELECT 
+    Post.title, 
+    Post.id, 
+    Post.creator_id, 
+    Post.creation_date, 
+    Post.createdAt, 
+    Post.updatedAt, 
+    interactions.id AS interactions.id, 
+    interactions.type AS interactions.type, 
+    interactions.interaction_body AS interactions.interaction_body, 
+    interactions.time_of_interaction AS interactions.time_of_interaction, 
+    interactions.post_id AS interactions.post_id, 
+    interactions.creator_id AS interactions.creator_id, 
+    interactions.createdAt AS interactions.createdAt, 
+    interactions.updatedAt AS interactions.updatedAt, 
+    user.id AS interactions.user.id, 
+    user.nickname AS interactions.user.nickname, 
+    user.age AS interactions.user.age, 
+    user.city AS interactions.user.city, 
+    user.createdAt AS interactions.user.createdAt, 
+    user.updatedAt AS interactions.user.updatedAt 
+  FROM 
+    Post 
+    INNER JOIN Interaction AS interactions ON Post.id = interactions.post_id 
+    INNER JOIN User AS user ON interactions.creator_id = user.id 
+  WHERE 
+    Post.creation_date BETWEEN :from AND :to 
+    AND user.city IN (:cities)
+  LIMIT :offset, :limit
+`, {
+  replacements: {
+    from: from,
+    to: to,
+    cities: cities,
+    offset: offset,
+    limit: limit
+  },
+  type: sequelize.QueryTypes.SELECT
+});
+
+
+    return posts;
   } catch (error) {
       throw error;
   }
 };
 
 export default Post;
+
