@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import sinon  from 'sinon';
 import { User, Interaction, Post } from '../models/index.js';
 import { sequelize } from '../database.js';
+import PostController from '../controllers/PostController.js';
 
 const expect = _expect;
 use(chaiHttp);
@@ -250,15 +251,21 @@ describe('Post Model getAllPosts method test', () => {
   });
 
   it('gets all posts successfully', async () => {
-      const posts = await Post.getAllPosts();
+    const from = '2021-01-01';
+    const pageSizeInt = 10;
+    const pageInt = 1;
+    const posts = await Post.getAllPosts({from, to : null, interaction_date : null, cities : null, pageInt, pageSizeInt});
       expect(posts).to.be.an('array');
       expect(posts).to.deep.equal([newPost1, newPost2]);
   });
 
-  it('throws error when getting all posts fails', async () => {
-      findAllStub.throws(new Error('Failed to get posts'));
+  it('throws error when getting all posts fails', async () => {  
+    findAllStub.throws(new Error('Failed to get posts'));
       try {
-          await Post.getAllPosts();
+        const from = '2021-01-01';
+        const pageSizeInt = 10;
+        const pageInt = 1;
+        const posts = await Post.getAllPosts({from, to : null, interaction_date : null, cities : null, pageInt, pageSizeInt});
       } catch (error) {
           expect(error).to.be.an('error');
           expect(error.message).to.equal('Failed to get posts');
@@ -270,13 +277,13 @@ describe('Post Model getAllPosts method test', () => {
         await Post.getAllPosts('invalid date', '2022-01-01');
     } catch (error) {
         expect(error).to.be.an('error');
-        expect(error.message).to.equal('Invalid date format for "from" or "to" parameter');
+        expect(error.message).to.equal('Missing "from" parameter');
     }
 });
 
 it('throws error when "interaction_date" parameter has invalid date format', async () => {
     try {
-        await Post.getAllPosts('2022-01-01', '2022-12-31', 'invalid date');
+        await Post.getAllPosts({ from: '2022-01-01', to: '2022-12-31', interaction_date: 'invalid date'} );
     } catch (error) {
         expect(error).to.be.an('error');
         expect(error.message).to.equal('Invalid date format for "interaction_date" parameter');
@@ -316,11 +323,29 @@ describe('Post Model findAll sequelize method test', () => {
     });
 
     it('gets all posts successfully', async () => {
-        const posts = await Post.getAllPosts();
-        expect(posts).to.be.an('array');
-        expect(posts.length).to.equal(2);
-    });
+      const from = '2021-01-01';
+      const pageSizeInt = 10;
+      const pageInt = 1;
+      const req = {
+          query: {
+              from, 
+              to : null, 
+              interaction_date : null, 
+              cities : null, 
+              page: pageInt, 
+              pageSize: pageSizeInt
+          }
+      };
+      let responseData;
+    const res = {
+        json: (data) => { responseData = data; }
+    };
+
+    await PostController.getAllPosts(req, res);
+    console.log(responseData);
+    expect(responseData).to.be.an('array');
+    expect(responseData.length).to.equal(2);
+  });
 });
-  
     
 
