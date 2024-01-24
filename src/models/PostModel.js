@@ -94,11 +94,6 @@ Post.deletePost = async (id) => {
 
 Post.getAllPosts = async ({from, to, interaction_date, cities, pageInt, pageSizeInt}) => {
   try {
-    console.log('pagesize from postmodel:' + pageSizeInt)
-    console.log('page from postmodel:' + pageInt)
-    console.log('from from postmodel:' + from)
-    console.log('to from postmodel:' + to) 
-    console.log('interaction_date from postmodel:' + interaction_date) 
       const where = {};
 
       if (!from) {

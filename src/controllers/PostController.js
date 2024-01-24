@@ -46,7 +46,6 @@ const PostController = {
   getAllPosts: async (req, res) => {
     try {
       const { from, to, interaction_date, interaction_cities_list, page, pageSize } = req.query;
-      console.log('pagesize from postcontroller:' + pageSize)
 
       // Convert interaction_cities_list from comma-separated string to array
       const cities = interaction_cities_list ? interaction_cities_list.split(',') : null;

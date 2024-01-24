@@ -342,7 +342,6 @@ describe('Post Model findAll sequelize method test', () => {
     };
 
     await PostController.getAllPosts(req, res);
-    console.log(responseData);
     expect(responseData).to.be.an('array');
     expect(responseData.length).to.equal(2);
   });
