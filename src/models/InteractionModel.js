@@ -20,6 +20,10 @@ const Interaction = sequelize.define('Interaction', {
         allowNull: true,
         defaultValue: DataTypes.NOW,
     },
+    creator_city: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     post_id: {
         type: DataTypes.INTEGER,
         allowNull: true,

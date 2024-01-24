@@ -59,6 +59,7 @@ const PostController = {
       const posts = await Post.getAllPosts({ from, to, interaction_date, cities, pageInt, pageSizeInt });
       res.json(posts);
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: error.message }); 
     }
   }
